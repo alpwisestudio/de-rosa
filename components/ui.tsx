@@ -15,12 +15,13 @@ export function Mark() {
   return <span className="mark" data-mark="ring" aria-hidden="true" />;
 }
 
-// Le righe entrano una dopo l'altra quando la lista arriva sullo schermo (components/Motion.tsx).
+// Quando l'elenco arriva sullo schermo le righe entrano da sinistra una dopo l'altra
+// e la riga sotto ciascuna si disegna (components/Motion.tsx, public/site.css).
 export function Rows({ rows, className = "rows" }: { rows: Row[]; className?: string }) {
   return (
-    <ul className={className}>
+    <ul className={className} data-reveal="list">
       {rows.map((r, i) => (
-        <li key={r.name} data-reveal="" style={{ ["--d" as string]: `${i * 70}ms` }}>
+        <li key={r.name} style={{ ["--i" as string]: i }}>
           <span className="rows__name">
             {r.name}
             {r.note && <small>{r.note}</small>}

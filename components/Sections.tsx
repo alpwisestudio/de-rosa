@@ -32,11 +32,11 @@ export function Hero() {
 
 export function Patenti() {
   return (
-    <section className="section" id="patenti" style={{ ["--hm" as string]: 2 }} aria-labelledby="patenti-h">
+    <section className="section" id="patenti" aria-labelledby="patenti-h">
       <div className="wrap grid grid--top">
         <div className="span-6">
           <Head id="patenti-h" title="Le patenti, dalla moto all’autobus" lead="Teoria e guida per ogni categoria, con l’età minima." />
-          <Rows rows={patenti} className="rows rows--hover" />
+          <Rows rows={patenti} />
         </div>
         <Photo className="frame frame--photo frame--fill span-6 start-7" name="moto" sizes={HALF} alt="Un motociclista con casco integrale su una moto sportiva rossa, su una strada di campagna al tramonto" subject="moto in strada" />
       </div>
@@ -69,11 +69,11 @@ export function Percorso() {
 
 export function Professionali() {
   return (
-    <section className="section ground-inverse" id="professionali" style={{ ["--hm" as string]: 2 }} aria-labelledby="pro-h">
+    <section className="section ground-inverse" id="professionali" aria-labelledby="pro-h">
       <div className="wrap grid grid--top">
         <div className="span-6">
           <Head id="pro-h" title="Corsi per chi guida per lavoro" lead="Patenti superiori, qualifiche e corsi per le aziende di autotrasporto." />
-          <Rows rows={professionali} className="rows rows--hover" />
+          <Rows rows={professionali} />
         </div>
         <div className="pair span-6 start-7">
           <Photo name="camion-pale" sizes="(min-width: 1024px) 900px, 100vw" alt="Un camion con semirimorchio su una strada dritta tra i campi" subject="camion su strada" />
@@ -116,9 +116,9 @@ export function Domande() {
       <div className="wrap grid grid--top">
         <div className="span-6">
           <Head id="domande-h" title="Domande frequenti" lead="Il resto te lo spieghiamo in sede, al colloquio." />
-          <div className="faq">
+          <div className="faq" data-reveal="list">
             {domande.map((d, i) => (
-              <div className="faq__item" key={d.q} data-reveal="" style={{ ["--d" as string]: `${i * 90}ms` }}><h3>{d.q}</h3><p>{d.a}</p></div>
+              <div className="faq__item" key={d.q} style={{ ["--i" as string]: i }}><h3>{d.q}</h3><p>{d.a}</p></div>
             ))}
           </div>
         </div>
@@ -149,14 +149,14 @@ export function Prenota() {
   return (
     <section className="section" id="prenota" aria-labelledby="prenota-h">
       <div className="wrap grid grid--top">
-        <div className="span-5 section-head" data-reveal="">
+        <div className="span-5 section-head">
           <h2 id="prenota-h">Prenota un colloquio in sede</h2>
           <p>Scrivici quale patente ti interessa: ti richiamiamo per fissare un orario e ti spieghiamo percorso e costi.</p>
-          <ul className="facts">
-            <li><span>Dove</span><span>{site.street}, {site.town}</span></li>
-            <li><span>Teoria</span><span>In aula o in diretta streaming</span></li>
-            <li><span>Corsi</span><span>Mattina, pomeriggio e sera</span></li>
-            <li><span>Costi</span><span>Tutti spiegati all’iscrizione</span></li>
+          <ul className="facts" data-reveal="list">
+            <li style={{ ["--i" as string]: 0 }}><span>Dove</span><span>{site.street}, {site.town}</span></li>
+            <li style={{ ["--i" as string]: 1 }}><span>Teoria</span><span>In aula o in diretta streaming</span></li>
+            <li style={{ ["--i" as string]: 2 }}><span>Corsi</span><span>Mattina, pomeriggio e sera</span></li>
+            <li style={{ ["--i" as string]: 3 }}><span>Costi</span><span>Tutti spiegati all’iscrizione</span></li>
           </ul>
           <p><a className="link" href={site.mapUrl}>Indicazioni stradali</a></p>
         </div>

@@ -57,13 +57,33 @@ html.js-motion [data-reveal="photo"] > img { clip-path: inset(100% 0 0 0); scale
 html.js-motion [data-reveal="photo"].is-in > img { clip-path: inset(0 0 0 0); scale: 1; }
 .pair > [data-reveal="photo"]:nth-child(2) { --d: 180ms; }
 
-/* the licence rows answer the pointer: the row slides, its age turns to the accent */
-.rows--hover li { transition: padding .35s var(--ease-out), background-color .35s; }
-.rows--hover li .rows__value { transition: color .3s; }
+/* every list answers the pointer: a soft band fills the row, an accent bar grows on its left,
+   the row's words slide right and its name and value turn to the accent */
+:is(.rows, .faq) > * { position: relative; isolation: isolate; }
+:is(.rows, .faq) > *::before {
+  content: ""; position: absolute; z-index: -1; inset: 0 calc(-1 * var(--s-4));
+  border-radius: var(--r-md); background: var(--p-surface);
+  opacity: 0; transform: scaleY(.6); transition: opacity .35s var(--ease-out), transform .45s var(--ease-out);
+}
+.ground-inverse :is(.rows, .faq) > *::before { background: var(--p-inv-surface); }
+:is(.rows, .faq) > * > :first-child { position: relative; display: block; transition: transform .45s var(--ease-out), color .3s; }
+:is(.rows, .faq) > * > :first-child::before {
+  content: ""; position: absolute; left: -16px; top: .15em; bottom: .15em; width: 3px; border-radius: 2px;
+  background: var(--p-accent); transform: scaleY(0); transition: transform .4s var(--ease-out);
+}
+.ground-inverse :is(.rows, .faq) > * > :first-child::before { background: var(--p-inv-ink); }
+.rows > li .rows__value { transition: color .3s, transform .45s var(--ease-out); }
 @media (hover: hover) {
-  .rows--hover li:hover { padding-left: 12px; }
-  .rows--hover li:hover .rows__value { color: var(--p-accent); }
-  .ground-inverse .rows--hover li:hover .rows__value { color: var(--p-inv-ink); }
+  :is(.rows, .faq) > *:hover::before { opacity: 1; transform: none; }
+  :is(.rows, .faq) > *:hover > :first-child { transform: translateX(16px); color: var(--p-accent); }
+  :is(.rows, .faq) > *:hover > :first-child::before { transform: scaleY(1); }
+  .rows > li:hover .rows__value { color: var(--p-accent); transform: translateX(-8px); }
+  .ground-inverse :is(.rows, .faq) > *:hover > :first-child,
+  .ground-inverse .rows > li:hover .rows__value { color: var(--p-inv-ink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.rows, .faq) > * > :first-child, .rows > li .rows__value { transition: color .3s; }
+  :is(.rows, .faq) > *:hover > :first-child, .rows > li:hover .rows__value { transform: none; }
 }
 
 /* chi siamo: the licence codes run in one band under the statement */
@@ -81,18 +101,61 @@ html.js-motion [data-reveal="photo"].is-in > img { clip-path: inset(0 0 0 0); sc
   html.js-motion [data-reveal], html.js-motion [data-reveal="photo"] > img { opacity: 1; transform: none; clip-path: none; scale: 1; transition: none; }
 }
 
-/* spacing asked by the client: the short sections take the height of their content instead of a whole screen,
-   so the gap between them is one steady padding (the photo-chapters section keeps the height the moment sets) */
-main > section.section:is(#chi-siamo, #domande, #servizi, #prenota), footer.closing {
+/* spacing asked by the client: every section after the hero is as tall as its content, and the space between two
+   sections is one steady rhythm (--gap-y above and below each one), on desktop and on the phone alike.
+   The photo-chapters section (#percorso) keeps the height its moment needs for the scroll. */
+:root { --gap-y: 80px; }
+@media (max-width: 1023px) { :root { --gap-y: 64px; } }
+@media (max-width: 639px) { :root { --gap-y: 48px; } }
+main > section.section:not(#percorso), footer.closing {
   height: auto; min-height: 0;
-  padding-top: var(--s-9); padding-bottom: calc(var(--s-9) + var(--bar));
+  padding-top: var(--gap-y); padding-bottom: var(--gap-y);
 }
-main > section#chi-siamo { padding-bottom: calc(var(--s-8) + var(--bar)); }
-main > section#domande, main > section#servizi { padding-top: var(--s-8); }
-main > section#prenota { padding-top: var(--s-8); }
-footer.closing { padding-top: var(--s-8); }
+/* the fixed phone bar only needs room under the last block of the page */
+footer.closing { padding-bottom: calc(var(--gap-y) + var(--bar)); }
 footer.closing > .wrap { grid-template-rows: auto auto; row-gap: var(--s-9); }
+@media (max-width: 639px) { footer.closing > .wrap { row-gap: var(--s-8); } }
 .ticker { position: static; margin-top: var(--s-8); }
-@media (max-width: 639px) {
-  main > section.section:is(#chi-siamo, #domande, #servizi, #prenota), footer.closing { padding-top: var(--s-8); padding-bottom: calc(var(--s-8) + var(--bar)); }
+@media (max-width: 639px) { .ticker { margin-top: var(--s-7); } }
+/* the hero ends on its picture, so the first section takes the whole gap on its own top */
+main > section#patenti { padding-top: calc(2 * var(--gap-y) - var(--hpadb, 64px)); }
+@media (max-width: 639px) { main > section#patenti { padding-top: calc(2 * var(--gap-y) + 24px); } }
+/* the photo-chapters section keeps its scroll height, but takes the same padding as the others */
+main > section#percorso { padding-top: var(--gap-y); padding-bottom: var(--gap-y); }
+
+/* lists (licences, courses, services, questions, contact facts): when the list reaches the screen its rows slide in
+   from the left one after another, and the rule under each row draws itself from left to right */
+html.js-motion [data-reveal="list"] { opacity: 1; transform: none; transition: none; }
+html.js-motion [data-reveal="list"] > * {
+  position: relative; opacity: 0; transform: translateX(-40px);
+  border-bottom-color: transparent;
+  transition: opacity .7s var(--ease-out), transform .8s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 110ms + 80ms);
+}
+html.js-motion [data-reveal="list"] > *::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: var(--line); transform: scaleX(0); transform-origin: left;
+  transition: transform 1s var(--ease-out); transition-delay: calc(var(--i, 0) * 110ms + 300ms);
+}
+html.js-motion [data-reveal="list"].is-in > * { opacity: 1; transform: none; }
+html.js-motion [data-reveal="list"].is-in > *::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  html.js-motion [data-reveal="list"] > * { opacity: 1; transform: none; transition: none; border-bottom-color: var(--line); }
+  html.js-motion [data-reveal="list"] > *::after { display: none; }
+}
+/* the first row of a list has no top padding (it lines up with the picture beside it):
+   its hover band reaches up by the row padding so the words never sit on the band's edge */
+.rows > li:first-child::before { top: calc(-1 * var(--s-4)); }
+.faq > .faq__item:first-child::before { top: calc(-1 * var(--s-5)); }
+/* the chapters' sticky frame already keeps room for the nav above its heading */
+main > section#percorso { padding-top: 0; }
+/* its sticky frame starts with room for the nav (104px desktop, 88px phone): pull it up so the gap above matches the rest */
+main > section#percorso { margin-top: -24px; }
+@media (max-width: 1023px) { main > section#percorso { margin-top: -40px; } }
+/* very narrow phones (320): the big close button and the footer columns shrink with the screen */
+@media (max-width: 359px) {
+  #contact .btn--xl { min-width: 0; width: 100%; font-size: 16px; white-space: normal; }
+  #contact .closing__links .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #contact .closing__links .grid > * { min-width: 0; grid-column: auto; }
+  #contact .closing__links .span-4 { grid-column: 1 / -1; }
 }
