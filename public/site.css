@@ -1,0 +1,98 @@
+/* page CSS of the De Rosa home: only what the kit lacks (references: sections-library.md) */
+.rows .rows__name small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-body); margin-top: 2px; }
+
+/* professionali: two portrait frames beside the rows, as tall as the rows on desktop */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.pair .frame { aspect-ratio: 4 / 5; }
+@media (min-width: 1024px) { #professionali .pair { align-self: stretch; } #professionali .pair .frame { aspect-ratio: auto; height: 100%; } }
+@media (max-width: 639px) { .pair { gap: 12px; } }
+
+@media (max-width: 1023px) { #patenti .frame { aspect-ratio: 4 / 3; height: auto; margin-top: 48px; } }
+.faq .faq__item > h3 { font-family: var(--font-display); font-weight: var(--display-weight); }
+
+.svc-photo { aspect-ratio: 4 / 5; }
+@media (max-width: 1023px) { .svc-photo { aspect-ratio: 16 / 9; } }
+
+#prenota .form .field:has(textarea), #prenota .form .btn-row, #prenota .form .form__status { grid-column: 1 / -1; }
+@media (max-width: 639px) { #prenota .facts { display: none; } #prenota textarea { min-height: 96px; } }
+.facts { list-style: none; margin: 0; padding: 0; }
+.facts li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.facts li span:first-child { color: var(--muted); }
+
+/* inner pages (privacy, crediti) */
+.page-plain { padding: 160px 0 96px; }
+.page-plain h1 { font: var(--display-weight) var(--t-h2)/1.1 var(--font-display); letter-spacing: var(--display-tracking); margin: 0 0 32px; }
+
+/* hero: the words centred on the height of the photograph (desktop, where text and photo sit side by side) */
+@media (min-width: 1024px) { .hero--split .hero__text { align-self: center; } }
+
+/* domande: the photograph that develops (picture-develops), as tall as the questions beside it */
+.develop { margin: 0; border-radius: var(--r-lg); overflow: hidden; align-self: stretch; min-height: 440px; }
+.develop > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 1023px) { .develop { min-height: 0; aspect-ratio: 4 / 3; margin-top: 48px; } }
+@media (max-width: 639px) { .develop { aspect-ratio: 16 / 9; margin-top: 32px; } }
+
+/* ------------------------------------------------------------------ motion added for the client */
+:root { --ease-out: cubic-bezier(.2, .7, .15, 1); }
+
+/* hero: the headline rises word by word, then the line, the buttons and the card; the photo uncovers itself */
+.h1-words .w { display: inline-block; overflow: clip; overflow-clip-margin: .12em; vertical-align: top; }
+.h1-words .w > span { display: inline-block; animation: word-up .95s var(--ease-out) both; animation-delay: calc(var(--i) * 70ms + 120ms); }
+@keyframes word-up { from { transform: translateY(105%); } to { transform: none; } }
+.hero-in { animation: rise-in .9s var(--ease-out) both; animation-delay: var(--d, 0ms); }
+@keyframes rise-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.hero-photo { animation: uncover 1.25s var(--ease-out) both .1s; }
+.hero-photo > img { animation: settle 1.8s var(--ease-out) both .1s; transform: translateY(var(--py, 0px)) scale(1.06); }
+@keyframes uncover { from { clip-path: inset(100% 0 0 0 round var(--r-lg)); } to { clip-path: inset(0 0 0 0 round var(--r-lg)); } }
+@keyframes settle { from { scale: 1.12; } to { scale: 1; } }
+.hero-photo .ly-float .ly-float__row span:first-child::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--p-accent); animation: pulse 2.4s ease-in-out infinite 1.6s; vertical-align: 1px; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(44, 88, 119, .45); } 60% { box-shadow: 0 0 0 8px rgba(44, 88, 119, 0); } }
+
+/* scroll: heads, rows and questions rise in, in sequence; photographs uncover from below and settle */
+html.js-motion [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); transition-delay: var(--d, 0ms); }
+html.js-motion [data-reveal].is-in { opacity: 1; transform: none; }
+/* the frame is what the observer watches; the picture inside it is what uncovers (a clip on the frame itself would hide it from the observer) */
+html.js-motion [data-reveal="photo"] { opacity: 1; transform: none; transition: none; }
+html.js-motion [data-reveal="photo"] > img { clip-path: inset(100% 0 0 0); scale: 1.14; transition: clip-path 1.1s var(--ease-out), scale 1.6s var(--ease-out); transition-delay: var(--d, 0ms); }
+html.js-motion [data-reveal="photo"].is-in > img { clip-path: inset(0 0 0 0); scale: 1; }
+.pair > [data-reveal="photo"]:nth-child(2) { --d: 180ms; }
+
+/* the licence rows answer the pointer: the row slides, its age turns to the accent */
+.rows--hover li { transition: padding .35s var(--ease-out), background-color .35s; }
+.rows--hover li .rows__value { transition: color .3s; }
+@media (hover: hover) {
+  .rows--hover li:hover { padding-left: 12px; }
+  .rows--hover li:hover .rows__value { color: var(--p-accent); }
+  .ground-inverse .rows--hover li:hover .rows__value { color: var(--p-inv-ink); }
+}
+
+/* chi siamo: the licence codes run in one band under the statement */
+#chi-siamo { overflow: clip; }
+.ticker { position: absolute; left: 0; right: 0; bottom: calc(var(--padb) + var(--bar)); overflow: hidden; pointer-events: none; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.ticker__track { display: flex; width: max-content; animation: ticker 38s linear infinite; }
+.ticker__set { display: flex; gap: 56px; padding-right: 56px; }
+.ticker__item { font: var(--display-weight) clamp(56px, 8vw, 128px)/1 var(--font-display); letter-spacing: var(--display-tracking-xl); color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--p-ink) 35%, transparent); }
+.ticker__item:nth-child(5n + 1) { color: color-mix(in srgb, var(--p-accent) 85%, transparent); -webkit-text-stroke: 0; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+#chi-siamo { position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-words .w > span, .hero-in, .hero-photo, .hero-photo > img, .ticker__track, .hero-photo .ly-float .ly-float__row span::before { animation: none !important; }
+  html.js-motion [data-reveal], html.js-motion [data-reveal="photo"] > img { opacity: 1; transform: none; clip-path: none; scale: 1; transition: none; }
+}
+
+/* spacing asked by the client: the short sections take the height of their content instead of a whole screen,
+   so the gap between them is one steady padding (the photo-chapters section keeps the height the moment sets) */
+main > section.section:is(#chi-siamo, #domande, #servizi, #prenota), footer.closing {
+  height: auto; min-height: 0;
+  padding-top: var(--s-9); padding-bottom: calc(var(--s-9) + var(--bar));
+}
+main > section#chi-siamo { padding-bottom: calc(var(--s-8) + var(--bar)); }
+main > section#domande, main > section#servizi { padding-top: var(--s-8); }
+main > section#prenota { padding-top: var(--s-8); }
+footer.closing { padding-top: var(--s-8); }
+footer.closing > .wrap { grid-template-rows: auto auto; row-gap: var(--s-9); }
+.ticker { position: static; margin-top: var(--s-8); }
+@media (max-width: 639px) {
+  main > section.section:is(#chi-siamo, #domande, #servizi, #prenota), footer.closing { padding-top: var(--s-8); padding-bottom: calc(var(--s-8) + var(--bar)); }
+}
