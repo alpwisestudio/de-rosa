@@ -159,3 +159,10 @@ main > section#percorso { margin-top: -24px; }
   #contact .closing__links .grid > * { min-width: 0; grid-column: auto; }
   #contact .closing__links .span-4 { grid-column: 1 / -1; }
 }
+/* the secondary button is a text link in this look: no ground and no border in any state
+   (the kit's motion layer greys it on hover and press); hover only darkens its underline */
+html[data-buttons="arrow"] .btn--secondary,
+html[data-buttons="arrow"]:not([data-motion="off"]) .btn--secondary:is(:hover, :active, :focus, :focus-visible) {
+  background: none; border-color: transparent; box-shadow: none;
+}
+html[data-buttons="arrow"]:not([data-motion="off"]) .btn--secondary:hover { text-decoration-color: currentColor; }
