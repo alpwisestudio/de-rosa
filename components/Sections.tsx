@@ -5,9 +5,10 @@ import { pic } from "@/lib/images";
 // I riquadri ritagliano la foto in altezza (cover): chiediamo una versione più larga del riquadro, così non si sgrana.
 const HALF = "(min-width: 1024px) 1000px, (min-width: 640px) 100vw, 200vw";
 
+// data-enter="off": la hero ha già la sua entrata (titolo a parole, foto che si scopre); quella del kit la ripeterebbe.
 export function Hero() {
   return (
-    <section className="hero hero--split" data-enter="" aria-labelledby="hero-h">
+    <section className="hero hero--split" data-enter="off" aria-labelledby="hero-h">
       <div className="wrap"><div className="hero-text grid hero__grid">
         <div className="hero__text span-5">
           <p className="hero__kicker"><span className="dot" aria-hidden="true" />A Gallarate dal 1976</p>
