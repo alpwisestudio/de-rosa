@@ -166,3 +166,7 @@ html[data-buttons="arrow"]:not([data-motion="off"]) .btn--secondary:is(:hover, :
   background: none; border-color: transparent; box-shadow: none;
 }
 html[data-buttons="arrow"]:not([data-motion="off"]) .btn--secondary:hover { text-decoration-color: currentColor; }
+/* hero parallax: the photo is 120px taller than its frame and starts 120px higher, so the
+   downward drift (at most 100px, components/Motion.tsx) never uncovers the frame's ground */
+.hero-photo > img { top: -120px; height: calc(100% + 120px); }
+@media (prefers-reduced-motion: reduce) { .hero-photo > img { top: 0; height: 100%; } }

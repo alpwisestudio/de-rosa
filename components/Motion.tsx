@@ -4,7 +4,8 @@ import { useEffect } from "react";
 
 // Animazioni del sito, oltre a quelle del kit:
 // - [data-reveal]: l'elemento entra (sale e appare, o la foto si scopre) la prima volta che arriva sullo schermo;
-// - [data-parallax]: la foto dell'hero scorre un po' più lenta della pagina.
+// - [data-parallax]: la foto dell'hero scorre un po' più lenta della pagina (al massimo 100 px, dentro i 120 px
+//   di foto in più che la sua cornice nasconde in alto: public/site.css).
 // Con "riduci movimento" attivo nel sistema non si muove nulla e tutto è visibile da subito.
 export default function Motion() {
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Motion() {
         const y = window.scrollY;
         for (const el of layers) {
           if (y > window.innerHeight * 1.2) continue;
-          el.style.setProperty("--py", `${Math.round(y * 0.12)}px`);
+          el.style.setProperty("--py", `${Math.round(Math.min(y * 0.12, 100))}px`);
         }
       });
     };
