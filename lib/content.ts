@@ -6,7 +6,8 @@ export const site = {
   short: "De Rosa",
   street: "Via Giordano Bruno",
   town: "Gallarate",
-  mapUrl: "https://www.openstreetmap.org/search?query=Via%20Giordano%20Bruno%20Gallarate",
+  // Google Maps: sul telefono apre l'app, e cercando anche il nome porta alla scheda dell'autoscuola, se c'è.
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Autoscuola%20De%20Rosa%2C%20Via%20Giordano%20Bruno%2C%20Gallarate",
   // Indirizzo segnaposto finché il modulo non è collegato a un servizio di invio vero.
   formAction: "mailto:info@autoscuoladerosa.example",
   cta: "Prenota un colloquio",

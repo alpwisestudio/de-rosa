@@ -159,7 +159,7 @@ export function Prenota() {
             <li style={{ ["--i" as string]: 2 }}><span>Corsi</span><span>Mattina, pomeriggio e sera</span></li>
             <li style={{ ["--i" as string]: 3 }}><span>Costi</span><span>Tutti spiegati all’iscrizione</span></li>
           </ul>
-          <p><a className="link" href={site.mapUrl}>Indicazioni stradali</a></p>
+          <p><a className="link" href={site.mapUrl} target="_blank" rel="noopener noreferrer">Indicazioni stradali</a></p>
         </div>
         <div className="span-6 start-7" data-reveal="" style={{ ["--d" as string]: "150ms" }}>
           <form className="form visit--card" action={site.formAction} method="post" encType="text/plain" data-endpoint="" data-sent="La tua richiesta di colloquio è arrivata. Ti richiamiamo entro un giorno lavorativo." noValidate>
